@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.yashu.shoppingbackend.dao.CategoryDAO;
-import com.yashu.shoppingbackend.dto.Category;
 
 public class CategoryTestCase {
 	
@@ -16,7 +15,7 @@ public class CategoryTestCase {
 	private static CategoryDAO categoryDAO;
 	
 	
-	private Category category;
+	//private Category category;
 	
 	
 	

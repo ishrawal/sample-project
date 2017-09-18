@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,8 +71,14 @@ public class ManagementController {
 	public String handleProductSubmission(@Valid  @ModelAttribute("product") Product mproduct,BindingResult result,Model model){
 		
 		
-		
+		if(mproduct.getId()==0){
 		new ProductValidator().validate(mproduct, result);
+		}
+		else{
+			if(!mproduct.getFile().getOriginalFilename().equals("")){
+				new ProductValidator().validate(mproduct, result);
+			}
+		}
 		
 		
 		//check it there are any errors
@@ -87,10 +94,48 @@ public class ManagementController {
 		
 		logger.info(mproduct.toString());
 		
-		productDAO.add(mproduct);
+		if(mproduct.getId()==0){
+			//create a new product record if id is 0
+			productDAO.add(mproduct);
+		}else{
+			// update the product if id is not 0
+			productDAO.update(mproduct);
+		}
+		
+		
 		
 		return "redirect:/manage/products?operation=product";
 	}
+	
+	
+	@RequestMapping(value="/product/{id}/activation", method=RequestMethod.POST)
+	public String  handleProductActivation(@PathVariable int id ){
+		// is going to fetch the product from the database
+		Product product= productDAO.get(id);
+		boolean isActive=product.isActive();
+		// activating and deactivating based on the value of active filed
+		product.setActive(!product.isActive());
+		// update the product
+		productDAO.update(product);
+		
+		return (isActive)? "You have succesfully deactivated the product with id "+ product.getId():
+			"You have succesfully activated the product with id "+ product.getId();
+	}
 
-
+	@RequestMapping(value="/{id}/product", method=RequestMethod.GET)
+	public ModelAndView showEditProduct(@PathVariable int id){
+		ModelAndView mv= new ModelAndView("page");
+		
+		mv.addObject("userClickManageProducts", true);
+		mv.addObject("title", "Manage Products");
+		
+		//fetch the product from data base
+		Product nproduct= productDAO.get(id);
+        
+        mv.addObject("product", nproduct);
+			
+		
+		return mv;
+	}
+	
 }

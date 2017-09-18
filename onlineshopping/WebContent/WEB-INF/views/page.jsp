@@ -92,6 +92,11 @@
 			<c:if test="${userClickManageProducts==true}">
 				<%@include file="manageProducts.jsp"%>
 			</c:if>
+			
+			 <!--  Load only when user clicks cart  -->
+			<c:if test="${userClickShowCart==true}">
+				<%@include file="cart.jsp"%>
+			</c:if>
 
 
 		</div>
@@ -104,6 +109,9 @@
 
 		<!-- jQuery -->
 		<script src="${js}/jquery.js"></script>
+		
+	   <script src="${js}/jquery.validate.js"></script>
+		
 
 		<!-- Bootstrap Core JavaScript -->
 		<script src="${js}/bootstrap.min.js"></script>
@@ -113,6 +121,10 @@
 		
 		<!-- DATATABLE bootstrap Script -->	
 		<script src="${js}/dataTables.bootstrap.js"></script>
+		
+		<!-- bootbox Script -->	
+		<script src="${js}/bootbox.min.js"></script>
+		
 
 		<!-- self loaded JS	 -->
 		<script src="${js}/myapp.js"></script>

@@ -24,13 +24,13 @@ public class HibernateConfig {
 	
 	private final static String DATABASE_URL="jdbc:mysql://localhost:3306/onlineshopping";
 	private final static String DATABASE_DRIVER="com.mysql.jdbc.Driver";
-	private final static String DATABASE_DIALECT="org.hibernate.dialect.MySQLDialect";
+	private final static String DATABASE_DIALECT="org.hibernate.dialect.MySQL5Dialect";
 	private final static String DATABASE_USERNAME="root";
 	private final static String DATABASE_PASSWORD="root";
 	
 	
 	
-	@Bean
+	@Bean(name="datasource")
 	public DataSource getDataSource(){
 		
 		BasicDataSource datasource=new BasicDataSource();
@@ -59,7 +59,7 @@ public class HibernateConfig {
 		properties.put("hibernate.dialect", DATABASE_DIALECT);
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.format_sql", "true");
-		//properties.put("hiberante.hbm2ddl.auto", "create");
+		properties.put("hibernate.hbm2ddl.auto", "update");
 		
 		return properties;
 	}
